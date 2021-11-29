@@ -174,66 +174,68 @@ class Calculator extends StatelessWidget {
   static const maxTileSide = 150.0; 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size; 
-    var appBarHeight = Scaffold.of(context).appBarMaxHeight ?? 0;
-    var tileSide = min(maxTileSide, min(screenSize.width/4, (screenSize.height-appBarHeight)/4.5));
-
-    return Container(
-      constraints: BoxConstraints(maxWidth: tileSide*4), 
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end, 
-        children: [
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5.0), 
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Text(displayedText, 
-                      style: TextStyle(
-                        overflow: TextOverflow.clip,
-                        fontSize: tileSide*0.4, 
-                        color: Colors.grey[800], 
-                      )
-                    )
-                  ),
-                  BackspaceButton(
-                    iconSize: tileSide * 0.4, 
-                    onTriggered: () => handlePress('Backspace'),
-                  ),
-                ]
-              ),
-            )
-          ),
-          GridView.count(
-            shrinkWrap: true,
-            padding: EdgeInsets.only(bottom: tileSide), 
-            crossAxisCount: 4,
-            children: functions
-                .map((tile) => SizedBox(
-                  width: tileSide/2, height: tileSide/2, 
-                  child: Card( 
-                    margin: const EdgeInsets.all(5.0), 
-                    child: TextButton(
-                      child: FittedBox(
-                          fit: BoxFit.fitHeight, 
-                          child: Text(tile, style: 
-                            TextStyle(
-                              fontSize: tileSide, 
-                              fontFamily: 'monospace', 
-                            )
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var tileSide = min(maxTileSide, min(constraints.maxWidth/4, constraints.maxHeight/5.5)); 
+        return Container(
+          constraints: BoxConstraints(maxWidth: tileSide*4), 
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end, 
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0), 
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Text(displayedText, 
+                          style: TextStyle(
+                            overflow: TextOverflow.clip,
+                            fontSize: tileSide*0.4, 
+                            color: Colors.grey[800], 
                           )
-                        ),
-                      onPressed: () => handlePress(tile),
-                    ),
-                    color: Colors.blueGrey[200],
+                        )
+                      ),
+                      BackspaceButton(
+                        iconSize: tileSide/2 - 5.0, 
+                        onTriggered: () => handlePress('Backspace'),
+                      ),
+                    ]
                   ),
-                ))
-                .toList()),
-        ],
-      ),
+                )
+              ),
+              GridView.count(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(bottom: tileSide), 
+                crossAxisCount: 4,
+                children: functions
+                    .map((tile) => SizedBox(
+                      width: tileSide/2, height: tileSide/2, 
+                      child: Card( 
+                        margin: const EdgeInsets.all(5.0), 
+                        child: TextButton(
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, 
+                              child: Text(tile, style: 
+                                TextStyle(
+                                  fontSize: tileSide, 
+                                  fontFamily: 'monospace', 
+                                )
+                              )
+                            ),
+                          onPressed: () => handlePress(tile),
+                        ),
+                        color: Colors.blueGrey[200],
+                      ),
+                    ))
+                    .toList()
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 }
@@ -263,8 +265,8 @@ class _BackspaceButtonState extends State<BackspaceButton> {
       onTapCancel: () => _timer?.cancel(),
       borderRadius: BorderRadius.circular(10.0),
       child: Container(
-        padding: EdgeInsets.all(widget.iconSize/2),
-        child: Icon(Icons.backspace, size: widget.iconSize),
+        width: widget.iconSize*2, 
+        child: Center(child: Icon(Icons.backspace, size: widget.iconSize)),
       ));
   }
 }

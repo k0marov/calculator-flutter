@@ -6,4 +6,4 @@
 
 Демонстрация: 
 
-https://github.com/k0marov/calculator-flutter/assets/95040709/a8808431-c1a1-4c84-9300-bfca7bedf7c9
+https://github.com/k0marov/calculator-flutter/assets/95040709/b8315ac2-de7b-49a0-bb66-9b4ed91de70d
